@@ -1,0 +1,43 @@
+#Flatten Binary Tree to Linked List
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def flatten(self, root):
+        current = root
+        while current:
+            if current.left:
+                # Find the rightmost node of the left subtree
+                rightmost = current.left
+                while rightmost.right:
+                    rightmost = rightmost.right
+                
+                # Connect the rightmost node to the current's right subtree
+                rightmost.right = current.right
+                
+                # Move the left subtree to the right and remove the left link
+                current.right = current.left
+                current.left = None
+            
+            # Move to the next right node
+            current = current.right
+
+# Example usage
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(5)
+root.left.left = TreeNode(3)
+root.left.right = TreeNode(4)
+root.right.right = TreeNode(6)
+
+Solution().flatten(root)
+
+# Print the flattened tree
+current = root
+while current:
+    print(str(current.val) + (' -> ' if current.right else ''))
+    current = current.right
+
